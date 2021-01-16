@@ -1,0 +1,24 @@
+{
+  "name": "lastbackup",
+  "version": "0.0.0-development",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DevertNet/LastBackup.git"
+  },
+  "author": "Leon Weickert <node@devert.net> (https://devert.net/)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/DevertNet/LastBackup/issues"
+  },
+  "homepage": "https://github.com/DevertNet/LastBackup#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "parcel-bundler": "1.12.4",
+    "typescript": "4.0.5"
+  }
+}
