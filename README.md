@@ -8,4 +8,6 @@ Launch local dev server:
 ## Todo
 - Privacy Policy
 - Readme
+- - Self Hosting
 - DDEV Server
+- Server Side Salt
