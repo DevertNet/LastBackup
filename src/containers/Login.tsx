@@ -28,13 +28,16 @@ export default function Login() {
 
     console.log(name);
     console.log(password);
-    //history.push("/dashboard");
+    
 
 
 
     hashPassword();
 
     setShowError(true);
+
+    alert('wip');
+    history.push("/dashboard");
   }
 
   function hashPassword() {

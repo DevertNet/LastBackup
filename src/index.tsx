@@ -8,41 +8,51 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import { FileEarmarkLockFill } from 'react-bootstrap-icons';
 import Login from "./containers/Login";
+import Dashboard from "./containers/Dashboard";
 
 
-export default function BasicExample() {
-    console.log('asdasdasd');
-    return (
-      <Router>
-          {/*
-            A <Switch> looks through all its children <Route>
-            elements and renders the first one whose path
-            matches the current URL. Use a <Switch> any time
-            you have multiple routes, but you want only one
-            of them to render at a time
-          */}
-          <Switch>
-            <Route exact path="/">
-              <Login />
-            </Route>
-            <Route path="/dashboard">
-              <Dashboard />
-            </Route>
-          </Switch>
-      </Router>
-    );
-  }
-  
-  function Dashboard() {
+export default function App() {
     return (
       <div>
-        <h2>Dashboard</h2>
+        <div className="Header">
+            <Navbar bg="dark" variant="dark">
+              <Container>
+                <Navbar.Brand href="#home">
+                <FileEarmarkLockFill />{' '}
+                LastBackup
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+        </div>
+
+        <Container className="page-content">
+          <Router>
+              {/*
+                A <Switch> looks through all its children <Route>
+                elements and renders the first one whose path
+                matches the current URL. Use a <Switch> any time
+                you have multiple routes, but you want only one
+                of them to render at a time
+              */}
+              <Switch>
+                <Route exact path="/">
+                  <Login />
+                </Route>
+                <Route path="/dashboard">
+                  <Dashboard />
+                </Route>
+              </Switch>
+          </Router>
+        </Container>
       </div>
     );
   }
 
-  render(<BasicExample />, document.getElementById('root'));
+  render(<App />, document.getElementById('root'));
 
 
 document.getElementById('file-field').onchange = function () {
