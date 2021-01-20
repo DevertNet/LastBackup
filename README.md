@@ -9,6 +9,7 @@ Launch local dev server:
 - Privacy Policy
 - Readme
 - - Self Hosting
+- - Thanks to Xiphe
 - DDEV Server
 - Server Side Salt
 - Max File Size
