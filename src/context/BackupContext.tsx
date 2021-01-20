@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
-const BackupContext = React.createContext(
-    {
+type State = {
+    note: string;
+    files: any[];
+};
+
+const BackupContext = React.createContext<[State, React.Dispatch<React.SetStateAction<State>>]|null>(null);
+
+export default function BackupContextProvider(props: {children: React.ReactNode}) {
+    const [backupContext, setBackupContext] = useState({
         'note': 'Example Note',
         'files': [
         {
@@ -10,7 +17,20 @@ const BackupContext = React.createContext(
             'createdAt': '01.01.2021'
         }
         ]
-    }
-);
-export default BackupContext;
-  
+    });
+
+    return <BackupContext.Provider value={[backupContext, setBackupContext]}>{props.children}</BackupContext.Provider>
+};
+
+export function useBackupContext() {
+    const backupContext = useContext(BackupContext);
+
+    return backupContext[0];
+}
+
+export function useSetBackupContext() {
+    const backupContext = useContext(BackupContext);
+
+    return backupContext[1];
+}
+

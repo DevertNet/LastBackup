@@ -11,3 +11,5 @@ Launch local dev server:
 - - Self Hosting
 - DDEV Server
 - Server Side Salt
+- Max File Size
+- Cypress
