@@ -1,9 +1,16 @@
 # LastBackup
 The very last backup.
 
-## Dev
+## Dev - Frontend
 Launch local dev server:
+`npm install`   
 `npm start`
+
+## Dev - Backend
+Launch local dev server:
+`composer install`   
+`composer start`   
+http://localhost:8080/api/storage/gf897g87df8g7dfg89d78fg8dfg
 
 ## Todo
 - Privacy Policy
@@ -11,6 +18,9 @@ Launch local dev server:
 - - Self Hosting
 - - Thanks to Xiphe
 - DDEV Server
-- Server Side Salt
 - Max File Size
 - Cypress
+- Composer json anpassen (Author etc.)
+- API
+- - Sleep
+- - Salt
