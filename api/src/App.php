@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Slim\Factory\AppFactory;
 use App\Controller\Storage;
+use Slim\Factory\AppFactory;
 
 class App
 {

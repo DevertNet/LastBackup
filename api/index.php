@@ -6,5 +6,5 @@ use App\App;
 
 $app = new App;
 $app->run([
-    'basePath' => '/api'
+    'basePath' => '/api',
 ]);

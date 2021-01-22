@@ -27,7 +27,7 @@ class Storage
             $name = $args['hash'];
 
             $response->getBody()->write((string) json_encode($output));
-            
+
             return $response->withHeader('Content-type', 'application/json')->withStatus(404);
         });
     }
