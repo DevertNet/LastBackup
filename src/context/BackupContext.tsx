@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 
 type State = {
+    hashedPassword: string | boolean;
     note: string;
     files: any[];
 };
@@ -8,7 +9,13 @@ type State = {
 const BackupContext = React.createContext<[State, React.Dispatch<React.SetStateAction<State>>] | null>(null);
 
 export default function BackupContextProvider(props: { children: React.ReactNode }) {
+    // const [backupContext, setBackupContext] = useState({
+    //     'hashedPassword': false,
+    //     'note': '',
+    //     'files': []
+    // });
     const [backupContext, setBackupContext] = useState({
+        'hashedPassword': '48c8dcc755b371d35dc7901cea58b6adb43950b6e790f5fc28b3cfde58b6d4af',
         'note': 'Example Note',
         'files': [
             {

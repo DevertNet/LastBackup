@@ -40,7 +40,6 @@ export default function App() {
                 */}
             <Switch>
               <Route exact path="/">
-                <Dashboard />
                 <Login />
               </Route>
               <Route path="/dashboard">
@@ -49,6 +48,9 @@ export default function App() {
             </Switch>
           </Router>
         </Container>
+
+        <footer className="mt-4">
+        </footer>
       </div>
     </BackupContextProvider>
   );

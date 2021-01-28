@@ -17,10 +17,12 @@ http://localhost:8080/api/storage/gf897g87df8g7dfg89d78fg8dfg
 - Readme
 - - Self Hosting
 - - Thanks to Xiphe
-- DDEV Server
 - Max File Size
-- Cypress
 - Composer json anpassen (Author etc.)
 - API
 - - Sleep
 - - Salt
+- Cypress
+- Change Password Function
+- Delete Backup
+- Storage with Flysystem (e.g. Serverless with AWS)

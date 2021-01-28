@@ -1,0 +1,2 @@
+export const APP_URL: string = process.env.APP_URL ? process.env.APP_URL : 'http://localhost:1234/';
+export const API_URL: string = process.env.API_URL ? process.env.API_URL : 'http://localhost:8080/';

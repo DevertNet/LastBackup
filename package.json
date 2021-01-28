@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/DevertNet/LastBackup#readme",
   "dependencies": {
+    "@types/node": "^14.14.22",
     "bootstrap": "^4.5.3",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",

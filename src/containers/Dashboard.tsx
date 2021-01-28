@@ -1,23 +1,36 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
 import { TrashFill, CloudDownloadFill } from 'react-bootstrap-icons';
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
+import { Button, Alert, Table, Card, Form } from "react-bootstrap";
 import { useBackupContext, useSetBackupContext } from "../context/BackupContext";
+import { API_URL } from "../contstants";
 
-export default function Login() {
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [hashedPassword, setHashedPassword] = useState("");
+export default function Dashboard() {
     const history = useHistory();
-    const [showError, setShowError] = useState(false);
+    const [unsavedChanges, setUnsavedChanges] = useState(false);
 
     const backupContext = useBackupContext();
     const setBackupContext = useSetBackupContext();
 
-    function handleUpload(e) {
+    //check if backupContext is new; redirect to login
+    if (!backupContext.hashedPassword) {
+        history.push("/");
+    }
+
+    function updateNote(e) {
+        let note = e.target.value;
+
+        setBackupContext((current) => {
+            return {
+                ...current,
+                note
+            }
+        });
+
+        setUnsavedChanges(true);
+    }
+
+    function addFile(e) {
         var reader = new FileReader;
 
         reader.onload = function (e) {
@@ -40,6 +53,8 @@ export default function Login() {
                     files
                 }
             });
+
+            setUnsavedChanges(true);
         };
 
         reader.onprogress = function (e) {
@@ -51,17 +66,6 @@ export default function Login() {
 
         var fl = e.target.files[0];
         reader.readAsDataURL(e.target.files[0]);
-    }
-
-    function updateNote(e) {
-        let note = e.target.value;
-
-        setBackupContext((current) => {
-            return {
-                ...current,
-                note
-            }
-        });
     }
 
     function deleteFile(file: any[], index: number) {
@@ -78,9 +82,40 @@ export default function Login() {
         });
     }
 
+    function saveBackup() {
+        console.log(process.env.NODE_ENV);
+
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            mode: 'cors', // defaults to same-origin
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'React POST Request Example' })
+        };
+        fetch(API_URL + 'api/storage/gf897g87df8g7dfg89d78fg8dfg', requestOptions)
+            .then(response => response.json())
+            .then(
+                (data) => {
+                    console.log(data);
+                    console.log('juhuuu');
+                },
+                (error) => {
+                    alert('Whoops? Nothing saved :/');
+                }
+            );
+    }
+
     return (
         <div className="Dashboard">
             <h1>Dashboard</h1>
+
+            <Alert variant={unsavedChanges ? 'danger' : 'info'}>
+                {unsavedChanges ? (
+                    <div>There are unsaved changes! Do you want to update your backup?</div>
+                ) : (
+                        <div>No changes so far...</div>
+                    )}
+                <Button size="sm" type="submit" disabled={unsavedChanges} onClick={saveBackup}>Save</Button>
+            </Alert>
 
             <Card>
                 <Card.Body>
@@ -102,7 +137,7 @@ export default function Login() {
                     <Form.File
                         id="custom-file"
                         label="Custom file input"
-                        onChange={(e) => { handleUpload(e); }}
+                        onChange={(e) => { addFile(e); }}
                         custom
                     />
 
