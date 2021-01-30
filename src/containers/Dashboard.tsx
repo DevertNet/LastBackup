@@ -3,7 +3,9 @@ import { useHistory } from "react-router-dom";
 import { TrashFill, CloudDownloadFill } from 'react-bootstrap-icons';
 import { Button, Alert, Table, Card, Form } from "react-bootstrap";
 import { useBackupContext, useSetBackupContext } from "../context/BackupContext";
+import { useStoragePassword } from "../context/StoragePasswordContext";
 import { API_URL } from "../contstants";
+import { encrypt } from '../helper/crypt';
 
 export default function Dashboard() {
     const history = useHistory();
@@ -11,6 +13,7 @@ export default function Dashboard() {
 
     const backupContext = useBackupContext();
     const setBackupContext = useSetBackupContext();
+    const storagePassword = useStoragePassword();
 
     //check if backupContext is new; redirect to login
     if (!backupContext.hashedPassword) {
@@ -83,15 +86,17 @@ export default function Dashboard() {
     }
 
     function saveBackup() {
-        console.log(process.env.NODE_ENV);
+        console.log(encrypt(storagePassword, JSON.stringify(backupContext)));
 
         const requestOptions: RequestInit = {
             method: 'POST',
             mode: 'cors', // defaults to same-origin
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example' })
+            body: JSON.stringify({ 
+                encryptedData: encrypt(storagePassword, JSON.stringify(backupContext))
+            })
         };
-        fetch(API_URL + 'api/storage/gf897g87df8g7dfg89d78fg8dfg', requestOptions)
+        fetch(API_URL + 'api/storage/' + backupContext.hashedPassword, requestOptions)
             .then(response => response.json())
             .then(
                 (data) => {
@@ -114,7 +119,7 @@ export default function Dashboard() {
                 ) : (
                         <div>No changes so far...</div>
                     )}
-                <Button size="sm" type="submit" disabled={unsavedChanges} onClick={saveBackup}>Save</Button>
+                <Button size="sm" type="submit" disabled={!unsavedChanges} onClick={saveBackup}>Save</Button>
             </Alert>
 
             <Card>

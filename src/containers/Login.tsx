@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { Button, Form, Card, Alert } from "react-bootstrap";
-import sjcl from 'sjcl';
+import { hash, decrypt, encrypt } from '../helper/crypt';
 import { useSetBackupContext } from "../context/BackupContext";
+import { useStoragePassword, useSetStoragePassword } from "../context/StoragePasswordContext";
 import { API_URL } from "../contstants";
 
 export default function Login() {
@@ -11,10 +12,13 @@ export default function Login() {
     const [hashedPassword, setHashedPassword] = useState("");
     const history = useHistory();
     const [showNewError, setShowNewError] = useState(false);
-    const [showXhrError, setShowXhrError] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [createNewStorage, setCreateNewStorage] = useState(false);
     const [privacyPolicyAccepted, setPrivacyPolicyAccepted] = useState(false);
     const setBackupContext = useSetBackupContext();
+    const storagePassword = useStoragePassword();
+    const setStoragePassword = useSetStoragePassword();
 
     useEffect(() => {
         hashPassword();
@@ -40,34 +44,39 @@ export default function Login() {
             history.push("/dashboard");
         } else {
             //check if user has a storage
-            fetch(API_URL + "api/storage/gf897g87df8g7dfg89d78fg8dfg")
+            fetch(API_URL + "api/storage/" + hashedPassword)
                 .then(res => res.json())
                 .then(
                     (result) => {
                         if (result.found) {
-                            console.log('REDIRECT!!!');
-                            //history.push("/dashboard");
+                            try {
+                                var decryptedData = decrypt(storagePassword, result.encryptedData);
+                                setBackupContext(JSON.parse(decryptedData));
+                                history.push("/dashboard");
+                            }
+                            catch (e) {
+                                setShowError(true);
+                                setErrorMessage('Wrong password to decrypt, or the encrypted message is corrupted.');
+                            }
+
                         } else {
                             setShowNewError(true);
                         }
                     },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
                     (error) => {
-                        setShowXhrError(true);
+                        setShowError(true);
+                        setErrorMessage('Ooooooops...there was an error.');
                     }
                 )
         }
     }
 
     function hashPassword() {
-        var cleanedName = name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-        var salt = sjcl.codec.utf8String.toBits("lastbackup" + cleanedName);
-        var hashedPw = sjcl.misc.pbkdf2(password, salt, 5000, 256);
-        hashedPw = sjcl.codec.hex.fromBits(hashedPw);
+        var cleanedName = name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase(),
+            hashedPw = hash(password, cleanedName);
 
         setHashedPassword(hashedPw);
+        setStoragePassword(password + cleanedName);
     }
 
     return (
@@ -76,8 +85,8 @@ export default function Login() {
                 <Card.Body>
                     <Card.Title>Open or create your last backup</Card.Title>
 
-                    <Alert show={showXhrError} variant="danger">
-                        Ooooooops...there was an error.
+                    <Alert show={showError} variant="danger">
+                        {errorMessage}
                     </Alert>
 
                     <Alert show={showNewError} variant="danger">

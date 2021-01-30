@@ -7,3 +7,5 @@ dist
 /coverage/
 /vendor/
 .phpunit.result.cache
+/storage/
+!/storage/.gitkeep

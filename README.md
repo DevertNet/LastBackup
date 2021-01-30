@@ -13,6 +13,7 @@ Launch local dev server:
 http://localhost:8080/api/storage/gf897g87df8g7dfg89d78fg8dfg
 
 ## Todo
+- API Config File (Maybe PHP for Flysytem)
 - Privacy Policy
 - Readme
 - - Self Hosting
