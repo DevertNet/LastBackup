@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "rm -rf .dist && NODE_ENV=production parcel build src/index.html -d .dist --no-cache"
+    "build": "rm -rf .dist && NODE_ENV=production parcel build src/index.html -d .dist/public --no-cache"
   },
   "repository": {
     "type": "git",
