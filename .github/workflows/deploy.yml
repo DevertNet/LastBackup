@@ -31,7 +31,7 @@ jobs:
       - name: build
         run: npm run build
 
-      - name: Deploy to Server
+      - name: deploy
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
             SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
