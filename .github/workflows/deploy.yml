@@ -23,13 +23,26 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
       - name: npm install
         if: steps.npm-v1.outputs.cache-hit != 'true'
         run: |
           npm ci
 
+      - name: composer cache
+        uses: actions/cache@v2
+          with:
+            path: /tmp/composer-cache
+            key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        
+      - name: composer install
+        uses: php-actions/composer@v5
+        with:
+          dev: no
+          args: --profile --ignore-platform-reqs
+
       - name: build
-        run: npm run build
+        run: npm run build && npm run build-api
 
       - name: deploy
         uses: easingthemes/ssh-deploy@v2.1.5

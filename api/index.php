@@ -4,6 +4,7 @@
 $options = [
     'basePath' => '/api',
     'storagePath' => '../../storage/',
+    'composerVendor' => '../../vendor/',
 ];
 
 //For Development
@@ -16,10 +17,11 @@ if (php_sapi_name() == 'cli-server') {
     $options = [
         'basePath' => '/api',
         'storagePath' => '../storage/',
+        'composerVendor' => '../vendor/',
     ];
 }
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/' . $options['composerVendor'] . 'autoload.php';
 
 use App\App;
 
