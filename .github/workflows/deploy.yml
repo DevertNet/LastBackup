@@ -6,8 +6,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      APP_URL=https://lastbackup.devert.net/
-      API_URL=https://lastbackup.devert.net/
+      APP_URL: https://lastbackup.devert.net/
+      API_URL: https://lastbackup.devert.net/
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
