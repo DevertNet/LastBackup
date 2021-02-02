@@ -3,25 +3,40 @@ The very last backup.
 
 ![deploy](https://github.com/DevertNet/LastBackup/workflows/deploy/badge.svg)
 
-## Dev - Frontend
+## Production Build
+`npm install && composer install`  
+`npm run build && npm run-build-api`  
+
+File Structure:
+- /home/lastbackup/
+- /home/lastbackup/htdocs/ (Content from .dist folder)
+- /home/lastbackup/htdocs/public/ (Document Root)
+- /home/lastbackup/htdocs/public/api/
+- /home/lastbackup/htdocs/src/
+- /home/lastbackup/htdocs/src/api/
+- /home/lastbackup/htdocs/vendor/
+- /home/lastbackup/storage/ (Storage of encrypted backups)
+
+## Development - Frontend
 Launch local dev server:
 `npm install`   
 `npm start`
 
-## Dev - Backend
+## Development - Backend
 Launch local dev server:
 `composer install`   
 `composer start`   
-http://localhost:8080/api/storage/gf897g87df8g7dfg89d78fg8dfg
 
 ## Todo
 - API Config File (Maybe PHP for Flysytem)
+- - Salt
+- - Custom File
 - Privacy Policy
 - Readme
 - - Self Hosting
 - - Thanks to Xiphe
+- - Description
 - Max File Size
-- Composer json anpassen (Author etc.)
 - API
 - - Sleep
 - - Salt
@@ -30,3 +45,4 @@ http://localhost:8080/api/storage/gf897g87df8g7dfg89d78fg8dfg
 - Delete Backup
 - Storage with Flysystem (e.g. Serverless with AWS)
 - Favicon
+- Composer json anpassen (Author etc.)
