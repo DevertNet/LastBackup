@@ -31,7 +31,6 @@ Launch local dev server:
 - API Config File (Maybe PHP for Flysytem)
 - - Salt
 - - Custom File
-- Privacy Policy
 - Readme
 - - Self Hosting
 - - Thanks to Xiphe

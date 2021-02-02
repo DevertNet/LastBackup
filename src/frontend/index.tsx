@@ -1,17 +1,17 @@
 import './scss/main.scss'
-import sjcl from 'sjcl';
 import React from "react";
 import { render } from 'react-dom';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link
 } from "react-router-dom";
-import Navbar from "react-bootstrap/Navbar";
-import Container from "react-bootstrap/Container";
+import { Container, Navbar } from "react-bootstrap";
 import { FileEarmarkLockFill } from 'react-bootstrap-icons';
 import Login from "./containers/Login";
 import Dashboard from "./containers/Dashboard";
+import Privacypolicy from "./containers/Privacypolicy";
 import BackupContextProvider from "./context/BackupContext";
 import StoragePasswordContextProvider from "./context/StoragePasswordContext";
 
@@ -47,12 +47,23 @@ export default function App() {
                 <Route path="/dashboard">
                   <Dashboard />
                 </Route>
+                <Route path="/privacypolicy">
+                  <Privacypolicy />
+                </Route>
               </Switch>
+
+              <footer className="mt-4 mb-4">
+                <ul className="nav justify-content-center">
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/privacypolicy">Privacy policy</Link>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="https://www.devert.net/impressum" target="_blank">Imprint</a>
+                  </li>
+                </ul>
+              </footer>
             </Router>
           </Container>
-
-          <footer className="mt-4">
-          </footer>
         </div>
       </StoragePasswordContextProvider>
     </BackupContextProvider>
