@@ -1,6 +1,8 @@
 # LastBackup
 The very last backup.
 
+![deploy](https://github.com/DevertNet/LastBackup/workflows/deploy/badge.svg)
+
 ## Dev - Frontend
 Launch local dev server:
 `npm install`   
