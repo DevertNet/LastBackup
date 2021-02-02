@@ -1,5 +1,10 @@
 # LastBackup
-The very last backup.
+Imagine you are on vacation and all your luggage is stolen.
+Do you know important phone numbers or bank details by heart? I don't know these things. 
+
+That's why I created a backup solution where you can store important things with as little data as possible.
+
+Why not use a normal cloud? I have protected most services with 2 factor authentication. If I lose my phone and laptop I can't access them anymore.
 
 ![deploy](https://github.com/DevertNet/LastBackup/workflows/deploy/badge.svg)
 
@@ -27,14 +32,15 @@ Launch local dev server:
 `composer install`   
 `composer start`   
 
+## Thanks
+Thanks to @Xiphe for the help with React 😇
+
 ## Todo
 - API Config File (Maybe PHP for Flysytem)
 - - Salt
 - - Custom File
 - Readme
 - - Self Hosting
-- - Thanks to Xiphe
-- - Description
 - API
 - - Salt
 - Cypress

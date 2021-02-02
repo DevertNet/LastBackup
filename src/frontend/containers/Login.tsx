@@ -81,6 +81,18 @@ export default function Login() {
 
     return (
         <div className="Login">
+            <Card className="mb-4">
+                <Card.Body>
+                    <Card.Title><h1>Welcome to your last backup!</h1></Card.Title>
+
+                    <p>Imagine you are on vacation and all your luggage is stolen. Do you know important phone numbers or bank details by heart? I don't know these things.</p>
+
+                    <p>That's why I created a backup solution where you can store important things with as little data as possible.</p>
+
+                    <p>Why not use a normal cloud? I have protected most services with 2 factor authentication. If I lose my phone and laptop I can't access them anymore.</p>
+                </Card.Body>
+            </Card>
+
             <Card>
                 <Card.Body>
                     <Card.Title>Open or create your last backup</Card.Title>
