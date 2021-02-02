@@ -9,9 +9,11 @@ class Storage
 {
     public $name = 'storage';
     public $app;
+    public $options;
 
-    public function __construct($app)
+    public function __construct($app, $options)
     {
+        $this->options = $options;
         $this->app = $app;
         $this->getAction();
         $this->postAction();
@@ -100,7 +102,7 @@ class Storage
     {
         $folder1 = substr($hashedPassword, 0, 2);
         $folder2 = substr($hashedPassword, 2, 2);
-        return '..' . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . $folder1 . DIRECTORY_SEPARATOR . $folder2 . DIRECTORY_SEPARATOR;
+        return $this->options['storagePath'] . $folder1 . DIRECTORY_SEPARATOR . $folder2 . DIRECTORY_SEPARATOR;
     }
 
     public function getFullPath($hashedPassword)
