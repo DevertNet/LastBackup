@@ -48,6 +48,7 @@ class Storage
     {
         $output = [
             'success' => true,
+            'errorMessage' => '',
         ];
 
         $this->app->map(['POST', 'PUT'], '/' . $this->name . '/{hashedPassword}', function (Request $request, Response $response, array $args) use ($output) {
@@ -63,9 +64,18 @@ class Storage
                 $hashedPassword = $args['hashedPassword'];
                 $encryptedData = $contents['encryptedData'];
 
-                //save backup file
-                //TODO: try catch block and change success state in $output
-                $this->saveBackupFile($hashedPassword, $encryptedData);
+                //check max size
+                if (strlen($encryptedData) <= $this->options['maxSize']) {
+                    //save backup file
+                    //TODO: try catch block and change success state in $output
+                    $this->saveBackupFile($hashedPassword, $encryptedData);
+                }else{
+                    $output = [
+                        'success' => false,
+                        'errorMessage' => 'File size exceeded.'
+                    ];
+                }
+
             }
 
             //return body as json

@@ -36,9 +36,7 @@ Launch local dev server:
 - - Self Hosting
 - - Thanks to Xiphe
 - - Description
-- Max File Size
 - API
-- - Sleep
 - - Salt
 - Cypress
 - Change Password Function

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { TrashFill, CloudDownloadFill } from 'react-bootstrap-icons';
-import { Button, Alert, Table, Card, Form } from "react-bootstrap";
+import { Button, Alert, Table, Card, Form, Spinner } from "react-bootstrap";
 import { useBackupContext, useSetBackupContext } from "../context/BackupContext";
 import { useStoragePassword } from "../context/StoragePasswordContext";
 import { API_URL } from "../contstants";
@@ -10,6 +10,9 @@ import { encrypt } from '../helper/crypt';
 export default function Dashboard() {
     const history = useHistory();
     const [unsavedChanges, setUnsavedChanges] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const backupContext = useBackupContext();
     const setBackupContext = useSetBackupContext();
@@ -86,13 +89,13 @@ export default function Dashboard() {
     }
 
     function saveBackup() {
-        console.log(encrypt(storagePassword, JSON.stringify(backupContext)));
+        setShowSpinner(true);
 
         const requestOptions: RequestInit = {
             method: 'POST',
             mode: 'cors', // defaults to same-origin
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 encryptedData: encrypt(storagePassword, JSON.stringify(backupContext))
             })
         };
@@ -100,11 +103,21 @@ export default function Dashboard() {
             .then(response => response.json())
             .then(
                 (data) => {
-                    console.log(data);
-                    console.log('juhuuu');
+                    setShowSpinner(false);
+
+                    if (data.success) {
+                        setUnsavedChanges(false);
+                        setShowError(false);
+                        setErrorMessage('');
+                    } else {
+                        setShowError(true);
+                        setErrorMessage(data.errorMessage);
+                    }
                 },
                 (error) => {
-                    alert('Whoops? Nothing saved :/');
+                    setShowError(true);
+                    setErrorMessage('Whoops? Nothing saved :/');
+                    console.log(error);
                 }
             );
     }
@@ -113,6 +126,10 @@ export default function Dashboard() {
         <div className="Dashboard">
             <h1>Dashboard</h1>
 
+            <Alert show={showError} variant="danger">
+                {errorMessage}
+            </Alert>
+
             <Alert variant={unsavedChanges ? 'danger' : 'info'}>
                 {unsavedChanges ? (
                     <div>There are unsaved changes! Do you want to update your backup?</div>
@@ -120,6 +137,7 @@ export default function Dashboard() {
                         <div>No changes so far...</div>
                     )}
                 <Button size="sm" type="submit" disabled={!unsavedChanges} onClick={saveBackup}>Save</Button>
+                <Spinner animation="border" variant="dark" size="sm" className={'ml-2 ' + (showSpinner ? '' : 'd-none')} />
             </Alert>
 
             <Card>
