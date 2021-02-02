@@ -3,7 +3,7 @@
 //Live Options
 $options = [
     'basePath' => '/api',
-    'storagePath' => '../../storage/',
+    'storagePath' => '../../../storage/',
     'composerVendor' => '../../vendor/',
 ];
 

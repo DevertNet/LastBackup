@@ -29,3 +29,4 @@ http://localhost:8080/api/storage/gf897g87df8g7dfg89d78fg8dfg
 - Change Password Function
 - Delete Backup
 - Storage with Flysystem (e.g. Serverless with AWS)
+- Favicon
