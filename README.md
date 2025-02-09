@@ -8,6 +8,16 @@ Why not use a normal cloud? I have protected most services with 2 factor authent
 
 ![deploy](https://github.com/DevertNet/LastBackup/workflows/deploy/badge.svg)
 
+# IMPORTANT
+
+I have build in a mail alert with a currently fixed mail address:
+https://github.com/DevertNet/LastBackup/blob/master/src/api/Controller/Storage.php#L32
+
+No password or URL is transmitted, only the hash.
+As the tool is only used by me (so far), I have not made the e-mail address configurable. 
+
+Feel free to write me an e-mail or create an issue if you want me to change it :)
+
 ## Production Build
 `npm install && composer install`  
 `npm run build && npm run-build-api`  
