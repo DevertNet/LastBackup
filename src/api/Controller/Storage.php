@@ -29,6 +29,8 @@ class Storage
         $this->app->get('/' . $this->name . '/{hashedPassword}', function (Request $request, Response $response, array $args) use ($output) {
             $hashedPassword = $args['hashedPassword'];
 
+            mail("lastbackup@devert.net", "Lastbackup - Login Versuch", "From IP: " . $_SERVER['REMOTE_ADDR'] . " | Storage: " . $hashedPassword);
+
             //check if storage exists
             $filepath = $this->getFullPath($hashedPassword);
             if ($hashedPassword && file_exists($filepath)) {
