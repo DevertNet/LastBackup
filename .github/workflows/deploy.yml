@@ -1,55 +1,23 @@
 name: deploy
 
-on: push
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency: deploy
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      APP_URL: https://lastbackup.devert.net/
-      API_URL: https://lastbackup.devert.net/
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - uses: actions/cache@v2
-        id: npm-v1
-        with:
-          path: |
-            ~/.npm
-            node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: npm install
-        if: steps.npm-v1.outputs.cache-hit != 'true'
-        run: |
-          npm ci
-
-      - name: composer cache
-        uses: actions/cache@v2
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
-        
-      - name: composer install
-        uses: php-actions/composer@v5
-        with:
-          dev: no
-          args: --profile --ignore-platform-reqs
-
-      - name: build
-        run: npm run build && npm run build-api
-
-      - name: deploy
-        uses: easingthemes/ssh-deploy@v2.1.5
+      - name: Deploy auf cloud.einfach123.de
         env:
-            SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-            ARGS: "-rltgoDzvO --delete"
-            SOURCE: ".dist/"
-            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            TARGET: ${{ secrets.REMOTE_TARGET }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
+          echo "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # Der Key ist serverseitig fest an "deploy.sh lastbackup.devert.net" gebunden.
+          ssh -i ~/.ssh/id_deploy deploy@cloud.einfach123.de

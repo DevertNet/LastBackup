@@ -1,0 +1,32 @@
+# 1) PHP-Abhaengigkeiten, 2) Frontend-Build (Parcel 1 -> aeltere Node-Version), 3) PHP-Apache ohne Root auf Port 8080.
+FROM composer:2 AS vendor
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --prefer-dist --ignore-platform-reqs --optimize-autoloader
+
+# deasync braucht Compiler/Python, daher die Debian-Variante (nur Build-Stage)
+FROM node:16 AS frontend
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY src/frontend ./src/frontend
+COPY tsconfig.json ./
+ENV APP_URL=https://lastbackup.devert.net/ API_URL=https://lastbackup.devert.net/
+RUN NODE_ENV=production npx parcel build src/frontend/index.html -d .dist/public --no-cache
+
+FROM php:8.5-apache
+RUN a2enmod rewrite headers \
+ && sed -ri 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf \
+ && sed -ri 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf \
+ && sed -ri 's!/var/www/html!/var/www/htdocs/public!g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf
+COPY docker/site.conf /etc/apache2/conf-available/site.conf
+COPY docker/php.ini /usr/local/etc/php/conf.d/zz-site.ini
+RUN a2enconf site
+WORKDIR /var/www/htdocs
+COPY --from=frontend /app/.dist/public ./public
+COPY api ./public/api
+COPY src/api ./src/api
+COPY --from=vendor /app/vendor ./vendor
+# storagePath in api/index.php ist ../../../storage/ -> /var/www/storage (Volume)
+USER www-data
+EXPOSE 8080

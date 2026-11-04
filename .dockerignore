@@ -1,0 +1,10 @@
+node_modules
+.cache
+.dist
+dist
+.git
+.github
+vendor
+storage
+Dockerfile
+compose.yml

@@ -1,0 +1,25 @@
+# Laeuft auf cloud.einfach123.de unter /srv/hosting/sites/lastbackup.devert.net/ (Proxy: Caddy -> 127.0.0.1:8103)
+# Daten ausserhalb des Repos: ../data/storage
+services:
+  web:
+    build: .
+    image: site/lastbackup.devert.net
+    container_name: site-lastbackup
+    restart: unless-stopped
+    user: "10103:10103"
+    ports: ["127.0.0.1:8103:8080"]
+    volumes:
+      - ../data/storage:/var/www/storage
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run/apache2:uid=10103,gid=10103
+      - /var/lock/apache2:uid=10103,gid=10103
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    pids_limit: 100
+    networks: [hosting]
+networks:
+  hosting:
+    external: true
