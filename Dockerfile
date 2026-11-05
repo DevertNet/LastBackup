@@ -15,7 +15,10 @@ ENV APP_URL=https://lastbackup.devert.net/ API_URL=https://lastbackup.devert.net
 RUN NODE_ENV=production npx parcel build src/frontend/index.html -d .dist/public --no-cache
 
 FROM php:8.5-apache
-RUN a2enmod rewrite headers \
+# msmtp: mail() in PHP -> Postfix auf dem Host (172.30.0.1, Bridge br-hosting)
+RUN apt-get update && apt-get install -y --no-install-recommends msmtp && rm -rf /var/lib/apt/lists/* \
+ && printf 'defaults\nhost 172.30.0.1\nport 25\ntls off\nauth off\nfrom lastbackup@vmd48888.contaboserver.net\nlogfile -\naccount default\n' > /etc/msmtprc \
+ && a2enmod rewrite headers remoteip \
  && sed -ri 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf \
  && sed -ri 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf \
  && sed -ri 's!/var/www/html!/var/www/htdocs/public!g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf
