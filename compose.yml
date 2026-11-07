@@ -1,4 +1,5 @@
-# Laeuft auf cloud.einfach123.de unter /srv/hosting/sites/lastbackup.devert.net/ (Proxy: Caddy -> 127.0.0.1:8103)
+# Laeuft auf cloud.einfach123.de unter /srv/hosting/sites/lastbackup.devert.net/ im eigenen Rootless-Docker des Users hosting-lastbackup
+# (Proxy: Caddy -> 127.0.0.1:8103). Kein gemeinsames Docker-Netz mit anderen Seiten.
 # Daten ausserhalb des Repos: ../data/storage
 services:
   web:
@@ -19,7 +20,3 @@ services:
     security_opt: ["no-new-privileges:true"]
     mem_limit: 256m
     pids_limit: 100
-    networks: [hosting]
-networks:
-  hosting:
-    external: true

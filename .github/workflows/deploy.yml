@@ -19,5 +19,5 @@ jobs:
           install -m 700 -d ~/.ssh
           echo "$DEPLOY_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
           echo "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          # Der Key ist serverseitig fest an "deploy.sh lastbackup.devert.net" gebunden.
-          ssh -i ~/.ssh/id_deploy deploy@cloud.einfach123.de
+          # Der Key ist serverseitig beim User hosting-lastbackup fest an "deploy-site.sh lastbackup.devert.net" gebunden (kein sudo, kein root).
+          ssh -i ~/.ssh/id_deploy hosting-lastbackup@cloud.einfach123.de
