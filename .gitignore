@@ -3,10 +3,12 @@ coverage
 dist
 .dist
 .cache
+.parcel-cache
 .idea/
 .vscode/
 /coverage/
 /vendor/
 .phpunit.result.cache
+.parcel-cache
 /storage/
 !/storage/.gitkeep

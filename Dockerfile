@@ -1,18 +1,18 @@
-# 1) PHP-Abhaengigkeiten, 2) Frontend-Build (Parcel 1 -> aeltere Node-Version), 3) PHP-Apache ohne Root auf Port 8080.
+# 1) PHP-Abhaengigkeiten, 2) Frontend-Build (Parcel 2, Node 24 LTS), 3) PHP-Apache ohne Root auf Port 8080.
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --prefer-dist --ignore-platform-reqs --optimize-autoloader
 
-# deasync braucht Compiler/Python, daher die Debian-Variante (nur Build-Stage)
-FROM node:16 AS frontend
+# Build-Stage (Debian-Variante, damit die nativen Paket-Binaries von Parcel passen)
+FROM node:24-bookworm AS frontend
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 COPY src/frontend ./src/frontend
 COPY tsconfig.json ./
 ENV APP_URL=https://lastbackup.devert.net/ API_URL=https://lastbackup.devert.net/
-RUN NODE_ENV=production npx parcel build src/frontend/index.html -d .dist/public --no-cache
+RUN npm run build
 
 FROM php:8.5-apache
 # msmtp: mail() in PHP -> Postfix auf dem Host (172.30.0.1, Bridge br-hosting), STARTTLS mit gepinntem Fingerprint

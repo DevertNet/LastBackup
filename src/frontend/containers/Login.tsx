@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router";
 import { Button, Form, Card, Alert } from "react-bootstrap";
 import { hash, decrypt, encrypt } from '../helper/crypt';
 import { useSetBackupContext } from "../context/BackupContext";
@@ -10,7 +10,7 @@ export default function Login() {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [hashedPassword, setHashedPassword] = useState("");
-    const history = useHistory();
+    const navigate = useNavigate();
     const [showNewError, setShowNewError] = useState(false);
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -41,7 +41,7 @@ export default function Login() {
                     hashedPassword
                 }
             });
-            history.push("/dashboard");
+            navigate("/dashboard");
         } else {
             //check if user has a storage
             fetch(API_URL + "api/storage/" + hashedPassword)
@@ -52,7 +52,7 @@ export default function Login() {
                             try {
                                 var decryptedData = decrypt(storagePassword, result.encryptedData);
                                 setBackupContext(JSON.parse(decryptedData));
-                                history.push("/dashboard");
+                                navigate("/dashboard");
                             }
                             catch (e) {
                                 setShowError(true);
@@ -105,7 +105,7 @@ export default function Login() {
                         We have not found any files for this name/password combination. If you already have a backup, then your name or password is incorrect.
                     <br /><br />
 
-                        <Form.Group controlId="formBasicCheckbox">
+                        <Form.Group controlId="createNewStorage">
                             <Form.Check onChange={(e) => { setCreateNewStorage(e.target.checked); }} type="checkbox" label="Create a new backup for this name/password combination?" />
                         </Form.Group>
                     </Alert>
@@ -130,7 +130,7 @@ export default function Login() {
                         <small>Is not sent to the server as plaintext.</small>
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicCheckbox">
+                    <Form.Group controlId="privacyPolicy">
                         <Form.Check type="checkbox">
                             <Form.Check.Input type="checkbox" onChange={(e) => { setPrivacyPolicyAccepted(e.target.checked); }} />
                             <Form.Check.Label>We don't know what you store: Zero-Knowledge encryption. I have read and agree to the <Link to="/privacypolicy">privacy policy.</Link></Form.Check.Label>
@@ -152,7 +152,7 @@ export default function Login() {
                     </Form.Group>
 
                     <Form onSubmit={handleSubmit}>
-                        <Button block size="lg" type="submit" disabled={!validateForm()}>
+                        <Button className="w-100" size="lg" type="submit" disabled={!validateForm()}>
                             Login
                     </Button>
                     </Form>

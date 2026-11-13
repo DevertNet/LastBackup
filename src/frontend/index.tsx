@@ -1,12 +1,12 @@
 import './scss/main.scss'
 import React from "react";
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link
-} from "react-router-dom";
+} from "react-router";
 import { Container, Navbar } from "react-bootstrap";
 import { FileEarmarkLockFill } from 'react-bootstrap-icons';
 import Login from "./containers/Login";
@@ -19,38 +19,32 @@ export default function App() {
   return (
     <BackupContextProvider>
       <StoragePasswordContextProvider>
-        <div>
-          <div className="Header">
-            <Navbar bg="dark" variant="dark">
-              <Container>
-                <Navbar.Brand href="/">
-                  <FileEarmarkLockFill />{' '}
-                  LastBackup
+        <Router>
+          <div>
+            <div className="Header">
+              <Navbar bg="dark" data-bs-theme="dark">
+                <Container>
+                  <Navbar.Brand as={Link} to="/">
+                    <FileEarmarkLockFill />{' '}
+                    LastBackup
                   </Navbar.Brand>
-              </Container>
-            </Navbar>
-          </div>
+                </Container>
+              </Navbar>
+            </div>
 
-          <Container className="page-content">
-            <Router>
+            <Container className="page-content">
               {/*
-                  A <Switch> looks through all its children <Route>
+                  A <Routes> looks through all its children <Route>
                   elements and renders the first one whose path
-                  matches the current URL. Use a <Switch> any time
+                  matches the current URL. Use a <Routes> any time
                   you have multiple routes, but you want only one
                   of them to render at a time
                 */}
-              <Switch>
-                <Route exact path="/">
-                  <Login />
-                </Route>
-                <Route path="/dashboard">
-                  <Dashboard />
-                </Route>
-                <Route path="/privacypolicy">
-                  <Privacypolicy />
-                </Route>
-              </Switch>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/privacypolicy" element={<Privacypolicy />} />
+              </Routes>
 
               <footer className="mt-4 mb-4">
                 <ul className="nav justify-content-center">
@@ -58,16 +52,20 @@ export default function App() {
                     <Link className="nav-link" to="/privacypolicy">Privacy policy</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="https://www.devert.net/impressum" target="_blank">Imprint</a>
+                    <a className="nav-link" href="https://www.devert.net/impressum" target="_blank" rel="noreferrer">Imprint</a>
                   </li>
                 </ul>
               </footer>
-            </Router>
-          </Container>
-        </div>
+            </Container>
+          </div>
+        </Router>
       </StoragePasswordContextProvider>
     </BackupContextProvider>
   );
 }
 
-render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('Root container #root not found');
+}
+createRoot(container).render(<App />);

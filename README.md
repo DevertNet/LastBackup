@@ -18,9 +18,14 @@ As the tool is only used by me (so far), I have not made the e-mail address conf
 
 Feel free to write me an e-mail or create an issue if you want me to change it :)
 
+## Requirements
+- Node.js >= 20 (Docker-Build nutzt Node 24 LTS)
+- PHP >= 8.4 mit ext-json
+- Composer 2
+
 ## Production Build
 `npm install && composer install`  
-`npm run build && npm run-build-api`  
+`npm run build && npm run build-api`  
 
 File Structure:
 - /home/lastbackup/

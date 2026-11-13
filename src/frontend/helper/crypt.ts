@@ -14,7 +14,7 @@ export function encrypt(password: string, data: string) {
         salt: salt
     }
 
-    return sjcl.encrypt(password, data, options);
+    return sjcl.encrypt(password, data, options as sjcl.SjclCipherEncryptParams);
 }
 
 export function decrypt(password: string, data: string) {
@@ -22,7 +22,7 @@ export function decrypt(password: string, data: string) {
 }
 
 export function hash(password: string, salt: string) {
-    var salt = sjcl.codec.utf8String.toBits("lastbackup" + salt);
-    var hashedPw = sjcl.misc.pbkdf2(password, salt, 5000, 256);
+    var saltBits = sjcl.codec.utf8String.toBits("lastbackup" + salt);
+    var hashedPw = sjcl.misc.pbkdf2(password, saltBits, 5000, 256);
     return sjcl.codec.hex.fromBits(hashedPw);
 }
